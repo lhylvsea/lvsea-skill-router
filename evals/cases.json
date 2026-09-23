@@ -1,0 +1,58 @@
+{
+  "installed_skill_cases": [
+    {
+      "id": "native_ppt",
+      "goal": "把季度生产和经营数据做成可编辑的原生 PowerPoint 汇报，并检查文字越界",
+      "expected_route": ["pptx", "data-analytics"]
+    },
+    {
+      "id": "local_web_fix",
+      "goal": "修复当前本地 Web 管理系统的保存链路，检查前端请求、后端校验和真实记录回归",
+      "expected_route": ["diagnosing-bugs", "frontend-design"]
+    },
+    {
+      "id": "manufacturing_dashboard",
+      "goal": "读取设备和产量数据，设计工业科技蓝的设备管理看板并输出可运行页面",
+      "expected_route": ["data-analytics", "frontend-design"]
+    },
+    {
+      "id": "research_compare",
+      "goal": "查证几个 GitHub 项目的当前能力、安装风险和是否适合我的工作流，给出有来源的比较",
+      "expected_route": ["lvsea-research", "agent-reach"]
+    },
+    {
+      "id": "skill_release",
+      "goal": "创建一个新的中文 Skill，加入四个真实场景，运行验收并发布到我的 GitHub",
+      "expected_route": ["skill-creator", "lvsea-chuangzuo"]
+    },
+    {
+      "id": "video_quality",
+      "goal": "把素材剪成短视频，检查字幕换行、音画对齐、黑帧和最终导出",
+      "expected_route": ["chengfeng-videocut", "chatcut"]
+    }
+  ],
+  "ambiguous_cases": [
+    {
+      "id": "ppt_or_html",
+      "goal": "把这份内容做成一页可以展示的材料",
+      "expected_action": "ask_one_question_before_loading"
+    },
+    {
+      "id": "broad_research",
+      "goal": "帮我研究一下这个东西",
+      "expected_action": "ask_for_topic_and_deliverable"
+    }
+  ],
+  "no_skill_cases": [
+    {
+      "id": "generic_question",
+      "goal": "解释一下 Python 列表和元组的区别",
+      "expected_action": "none"
+    },
+    {
+      "id": "explicit_skill",
+      "goal": "使用 $lvsea-skill-router 只检查有哪些候选，不要加载下游 Skill",
+      "expected_action": "respect_explicit_router_scope"
+    }
+  ]
+}

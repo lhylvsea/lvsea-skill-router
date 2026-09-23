@@ -1,0 +1,14 @@
+interface:
+  display_name: "lvsea-skill-router"
+  short_description: "精准选择并串联已安装 Skill"
+  default_prompt: "Use $lvsea-skill-router to choose the smallest correct Skill set for this task, then continue the work."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "jev"
+      description: "Optional TypeSafe Jev MCP for semantic reranking and final routing decisions."
+      transport: "stdio"
+
+policy:
+  allow_implicit_invocation: true
