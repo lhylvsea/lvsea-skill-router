@@ -1,7 +1,6 @@
 ---
 name: lvsea-skill-router
-description: >
-  精确路由 Codex/Agent 已安装的 Skill：当技能很多、智能体没有主动调用、多个 Skill 描述重叠或一个任务需要多个阶段时使用。先扫描实际可发现的 SKILL.md，再用本地六轴上下文成本评分过滤宽泛描述，调用已配置的 jev MCP 做语义重排和二次决策，只有证据充分且置信度与排名差距达标才加载一个或多个 Skill；用户已明确指定 Skill 时不替换它。
+description: 精确路由 Codex/Agent 已安装的 Skill：当技能很多、智能体没有主动调用、多个 Skill 描述重叠或一个任务需要多个阶段时使用。先扫描实际可发现的 SKILL.md，再用本地六轴上下文成本评分过滤宽泛描述，调用已配置的 jev MCP 做语义重排和二次决策，只有证据充分且置信度与排名差距达标才加载一个或多个 Skill；用户已明确指定 Skill 时不替换它。
 metadata:
   short-description: 精准选择并串联已安装 Skill
 ---
@@ -10,6 +9,10 @@ metadata:
 
 Use this skill as a routing gate, not as a replacement for the selected specialist.
 The goal is to load the smallest useful set of Skills and avoid keyword-only matches.
+
+## 触发条件与调用方式
+
+当用户说“帮我选 Skill”“已安装很多技能但不会主动调用”“多个 Skill 描述很像”“请精准调用一个或多个 Skill”或要求先路由再执行时，显式调用 `$lvsea-skill-router`。用户已经指定 `$skill-name` 时，不替换用户选择。
 
 ## Workflow
 

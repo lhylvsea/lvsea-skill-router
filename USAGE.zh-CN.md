@@ -1,5 +1,9 @@
 # 中文使用说明
 
+## 触发词与调用方式
+
+“帮我选 Skill”“精准调用 Skill”“我装了很多技能但智能体没调用”“这些 Skill 描述太宽泛”“先路由再执行”。可以显式输入 `$lvsea-skill-router`，也可以在项目规则中要求复杂任务先调用本 Skill。
+
 ## 什么时候调用
 
 以下请求应优先显式调用 `$lvsea-skill-router`：
@@ -43,7 +47,7 @@
 - `missing_dependency`：未安装的工具、MCP 或下游 Skill；
 - `next_action`：读取哪个 `SKILL.md`、询问什么，或转交 `find-skills`。
 
-## 场景速查
+## 应用场景速查
 
 ### 场景 1：资料做成 PPT 还是网页
 
