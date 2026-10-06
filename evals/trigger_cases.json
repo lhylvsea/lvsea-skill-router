@@ -1,0 +1,55 @@
+{
+  "recommended_threshold": 0.5,
+  "positive_concepts": {
+    "skill": ["skill", "技能"],
+    "route": ["路由", "路线", "路由器"],
+    "deliverable": ["交付物", "结果", "效果"],
+    "execution": ["执行", "制作", "实现"],
+    "options": ["方案", "方向", "组合"]
+  },
+  "description_required_concepts": ["skill", "route", "deliverable"],
+  "negative_patterns": ["翻译", "普通问答", "不需要路由", "不做路线", "安装命令", "只给我一个 Skill"],
+  "should_trigger": [
+    {
+      "text": "我装了很多 Skill，不知道该怎么路由，请给我几个制作方案并推荐一个执行",
+      "family": "explicit_route",
+      "min_concept_matches": 3
+    },
+    {
+      "text": "这个任务有网页和代码两种方向，请判断交付物、技能组合和最终效果，再开始实现",
+      "family": "multi_route",
+      "min_concept_matches": 3
+    },
+    {
+      "text": "先分析这个文件适合做成什么结果，给我路线卡和预览方向，选好后再制作",
+      "family": "preview_then_execute",
+      "min_concept_matches": 3
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "text": "请把下面这段中文翻译成英文，不需要路由或方案",
+      "family": "translation",
+      "expected_trigger": false
+    },
+    {
+      "text": "普通问答：Python 列表和元组有什么区别？",
+      "family": "ordinary_question",
+      "expected_trigger": false
+    }
+  ],
+  "near_neighbor": [
+    {
+      "text": "请只给我一个 Skill 的安装命令，不需要判断路线或执行任务",
+      "family": "installation_only",
+      "expected_trigger": false
+    }
+  ],
+  "adversarial": [
+    {
+      "text": "这个任务里出现了‘技能’两个字，但我只要一个普通定义，不需要路由",
+      "family": "keyword_only",
+      "expected_trigger": false
+    }
+  ]
+}

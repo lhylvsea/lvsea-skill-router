@@ -12,6 +12,11 @@ from skilllib import discover, enrich, json_dump  # noqa: E402
 
 
 def main() -> int:
+    # Windows PowerShell often exposes a legacy GBK stdout. Skill descriptions
+    # may contain emoji or other Unicode; keep the JSON inventory usable without
+    # requiring every caller to remember `-X utf8`.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="backslashreplace")
     parser = argparse.ArgumentParser(description="Scan installed SKILL.md files.")
     parser.add_argument("--cwd", default=None)
     parser.add_argument("--root", action="append", dest="roots", help="Additional skill root; repeatable")
