@@ -1,7 +1,7 @@
 interface:
   display_name: "lvsea-skill-router"
   short_description: "精准选择并串联已安装 Skill"
-  default_prompt: "Use $lvsea-skill-router to choose the smallest correct Skill set for this task, then continue the work."
+  default_prompt: "Use $lvsea-skill-router to inspect all available Skills, offer route cards when materially different outcomes are possible, ask only the necessary frontier questions, then execute the selected or recommended route."
 
 dependencies:
   tools:

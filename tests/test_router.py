@@ -80,6 +80,26 @@ class RouterTests(unittest.TestCase):
         result = build_route("one task", roots=[str(self.root)])
         json.dumps(result, ensure_ascii=False)
 
+    def test_choice_protocol_documents_route_cards_and_bounded_grilling(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        skill = (root / "SKILL.md").read_text(encoding="utf-8")
+        cards = (root / "references" / "route-cards.md").read_text(encoding="utf-8")
+        grilling = (root / "references" / "grilling-dialogue.md").read_text(encoding="utf-8")
+        self.assertIn("中文方案选择模式", skill)
+        self.assertIn("Grilling 式有限提问", skill)
+        self.assertIn("Skill 组合", cards)
+        self.assertIn("最多 3 个", grilling)
+        self.assertIn("默认最多 2 轮", grilling)
+
+    def test_choice_eval_cases_cover_non_video_and_direct_modes(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        cases = json.loads((root / "evals" / "cases.json").read_text(encoding="utf-8"))
+        ids = {case["id"] for case in cases["route_card_cases"]}
+        self.assertIn("excel_multiple_outputs", ids)
+        self.assertIn("web_design_vs_build", ids)
+        direct = next(case for case in cases["route_card_cases"] if case["id"] == "video_explicit_direct")
+        self.assertEqual(direct["expected_action"], "respect_explicit_and_direct_execute")
+
 
 if __name__ == "__main__":
     unittest.main()

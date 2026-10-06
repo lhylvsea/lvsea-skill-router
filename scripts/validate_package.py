@@ -27,6 +27,9 @@ def main() -> int:
     readme = root / "README.md"
     usage = root / "USAGE.zh-CN.md"
     agents = root / "agents" / "openai.yaml"
+    route_cards = root / "references" / "route-cards.md"
+    grilling = root / "references" / "grilling-dialogue.md"
+    trigger_cases = root / "evals" / "trigger_cases.json"
     skill_text = skill_path.read_text(encoding="utf-8") if skill_path.is_file() else ""
     fm = parse_frontmatter(skill_text)
     check("skill_exists", skill_path.is_file(), str(skill_path))
@@ -35,12 +38,16 @@ def main() -> int:
     check("readme_exists", readme.is_file(), str(readme))
     check("chinese_usage_exists", usage.is_file(), str(usage))
     check("openai_metadata_exists", agents.is_file(), str(agents))
+    check("route_cards_reference", route_cards.is_file(), str(route_cards))
+    check("grilling_reference", grilling.is_file(), str(grilling))
+    check("trigger_fixture", trigger_cases.is_file(), str(trigger_cases))
     readme_text = readme.read_text(encoding="utf-8") if readme.is_file() else ""
     usage_text = usage.read_text(encoding="utf-8") if usage.is_file() else ""
     combined = readme_text + "\n" + usage_text
     check("four_scenarios", len(re.findall(r"场景\s*[1-4一二三四]", combined)) >= 4, "at least four scenario labels")
     check("four_usage_examples", len(re.findall(r"lvsea-skill-router|route_request\.py", combined)) >= 4, "usage references")
     check("boundary_notes", any(token in combined for token in ("边界", "不会自动安装", "不替代")), "Chinese boundary text")
+    check("choice_protocol", "方案卡" in skill_text and "Grilling" in skill_text, "route cards and bounded dialogue")
     check("no_secret_pattern", not re.search(r"(?:apikey_|sk-[A-Za-z0-9]|TYPESAFE_API_KEY\s*=\s*[\"'][^$\n]{8,})", combined + "\n" + skill_text), "public files")
     check("no_scaffold_placeholders", not re.search(r"TODO|TBD|Your skill description|Replace this", skill_text + combined, re.I), "no unfinished scaffold")
     for script in sorted((root / "scripts").glob("*.py")) if (root / "scripts").is_dir() else []:

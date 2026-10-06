@@ -107,6 +107,8 @@ def build_route(goal: str, cwd: str | None = None, roots: list[str] | None = Non
 
 
 def main() -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="backslashreplace")
     parser = argparse.ArgumentParser(description="Create a precise Skill routing shortlist and Jev MCP payload.")
     parser.add_argument("goal", nargs="+", help="The user's task or session goal")
     parser.add_argument("--cwd", default=None)

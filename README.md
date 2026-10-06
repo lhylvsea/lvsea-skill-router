@@ -33,6 +33,22 @@ $lvsea-skill-router
 py -3.12 scripts/route_request.py --cwd C:\path\to\project --json "把季度数据做成可编辑的 PowerPoint 汇报并检查文字越界"
 ```
 
+## 中文方案选择模式
+
+`lvsea-skill-router` 现在同时承担两层职责：先用本地清单和 Jev 判断候选，再在路线会改变最终效果时给用户看懂的方案卡。它不是只回答“选哪个 Skill”，而是可以比较：
+
+- 交付物：PPTX、HTML、图片、MP4、看板或代码变更；
+- 制作组合：数据/研究 → 设计/实现 → 导出/验收；
+- 体验差异：横屏与竖屏、配音与无旁白、静态卡与交互页面、艺术风格与事实信息图。
+
+用户未要求直接执行时，路由器给出 2–3 个有实质差异的方案、一个推荐项和预览方式，并等待选择。用户说“按推荐直接做”时跳过等待。方案卡和有限 Grilling 式提问的细则见 `references/route-cards.md` 与 `references/grilling-dialogue.md`。
+
+例如：
+
+```text
+这是一个 Excel。请先用 $lvsea-skill-router 分析所有可用 Skill，给我 3 个不同的制作方向：横屏数据视频、手机实况卡、可交互看板。说明每条路线的 Skill 组合、效果、预览和限制，先不要做最终成品。
+```
+
 脚本不会替你调用远程模型，而是输出一个有界的 `jev_rerank` MCP 请求。然后让当前 Agent 调用已配置的 `jev` MCP：
 
 1. 调用 `jev_rerank` 对 shortlist 排名；

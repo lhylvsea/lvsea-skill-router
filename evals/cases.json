@@ -54,5 +54,38 @@
       "goal": "使用 $lvsea-skill-router 只检查有哪些候选，不要加载下游 Skill",
       "expected_action": "respect_explicit_router_scope"
     }
+  ],
+  "route_card_cases": [
+    {
+      "id": "excel_multiple_outputs",
+      "goal": "这是一个 Excel，请分析后告诉我适合做成横屏数据视频、手机实况卡还是可交互看板，并让我选方向",
+      "expected_action": "offer_route_cards",
+      "required_evidence": ["data/input stage", "2-3 materially different outputs", "preview plan", "wait for choice"]
+    },
+    {
+      "id": "web_design_vs_build",
+      "goal": "把这个网页需求做出来，但我还不知道是先做视觉方案、直接写页面，还是克隆现有网站",
+      "expected_action": "offer_route_cards_or_one_frontier_question",
+      "required_evidence": ["frontend route comparison", "prototype or screenshot preview", "recommended route"]
+    },
+    {
+      "id": "video_explicit_direct",
+      "goal": "使用 $cs-code-video 直接把这篇文章做成横屏 60 秒信息图视频，不用先问方案",
+      "expected_action": "respect_explicit_and_direct_execute",
+      "required_evidence": ["keep explicit skill", "record assumptions", "render and QA"]
+    }
+  ],
+  "grilling_cases": [
+    {
+      "id": "ppt_or_html",
+      "goal": "把这份资料做成一页能展示的东西",
+      "expected_action": "ask_frontier_question_with_recommendation",
+      "max_questions_in_round": 1
+    },
+    {
+      "id": "direct_low_risk",
+      "goal": "把这段文字整理成一封正式中文邮件，直接做",
+      "expected_action": "do_not_grill; execute"
+    }
   ]
 }
