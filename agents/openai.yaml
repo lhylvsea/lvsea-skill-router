@@ -1,7 +1,7 @@
 interface:
   display_name: "lvsea-skill-router"
-  short_description: "精准选择并串联已安装 Skill"
-  default_prompt: "Use $lvsea-skill-router to choose the smallest correct Skill set for this task, then continue the work."
+  short_description: "统一路由 Skill；可选择先展示候选并等待确认"
+  default_prompt: "Use $lvsea-skill-router to choose the smallest correct Skill set. If the user asks to confirm first, stop after reranking and wait for an explicit continue."
 
 dependencies:
   tools:
@@ -11,4 +11,4 @@ dependencies:
       transport: "stdio"
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

@@ -75,6 +75,21 @@ class RouterTests(unittest.TestCase):
         self.assertEqual(len(payload["candidates"]), 2)
         self.assertTrue(all("Boundary evidence" in item["text"] for item in payload["candidates"]))
 
+    def test_route_excludes_router_from_downstream_candidates(self) -> None:
+        self._write_skill("lvsea-skill-router", "Routes tasks to the most relevant installed Skill.")
+        self._write_skill("lvsea-jev-gate", "Legacy confirmation gate already included in the router.")
+        self._write_skill("codex-jev-gate", "Shows JEV Skill candidates and waits for explicit confirmation.")
+        self._write_skill("specialist", "Implements the requested concrete deliverable.")
+        route = build_route("choose a Skill and implement the requested deliverable", roots=[str(self.root)])
+        names = [item["name"] for item in route["shortlist"]]
+        self.assertNotIn("lvsea-skill-router", names)
+        self.assertNotIn("lvsea-jev-gate", names)
+        self.assertIn("codex-jev-gate", names)
+        self.assertIn("specialist", names)
+        self.assertIn("confirmation_mode", route["policy"])
+        self.assertIn("confirm first", route["policy"]["confirmation_mode"])
+        self.assertIn("not Jev probabilities", route["policy"]["fallback"])
+
     def test_route_output_is_json_serializable(self) -> None:
         self._write_skill("one", "A focused skill for one task.", "Use when the task matches.")
         result = build_route("one task", roots=[str(self.root)])

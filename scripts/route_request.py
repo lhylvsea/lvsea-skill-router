@@ -52,7 +52,11 @@ def _card(item: dict[str, Any]) -> str:
 
 def build_route(goal: str, cwd: str | None = None, roots: list[str] | None = None, top_k: int = 16) -> dict[str, Any]:
     root_specs = [(Path(root), "other") for root in roots] if roots else None
-    catalog = [enrich(item) for item in discover(cwd, roots=root_specs)]
+    catalog = [
+        enrich(item)
+        for item in discover(cwd, roots=root_specs)
+        if item["name"].casefold() not in {"lvsea-skill-router", "lvsea-jev-gate"}
+    ]
     ranked: list[dict[str, Any]] = []
     for item in catalog:
         score, hits = _local_score(goal, item)
@@ -99,6 +103,8 @@ def build_route(goal: str, cwd: str | None = None, roots: list[str] | None = Non
         "policy": {
             "auto_load": "Only after semantic rerank plus final decision; require top probability >= 0.68 and margin >= 0.12.",
             "review": "If probability or margin is below the auto threshold, show top two candidates and ask one focused question.",
+            "confirmation_mode": "If the user asks to confirm first, stop after rerank; after explicit continue, call jev_decide with the same candidate set without rerunning discovery or rerank.",
+            "fallback": "Local scores and shortlists are not Jev probabilities; do not auto-load an unselected Skill based only on fallback.",
             "pipeline": "For distinct stages such as research -> write -> render, decide a short ordered pipeline, capped at three skills.",
             "explicit_selection": "If the user names $skill-name or an exact skill, respect it and use the router only for conflict checking.",
             "no_install": "Never install a skill automatically; report a find-skills handoff when no local candidate fits.",

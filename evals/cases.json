@@ -54,5 +54,27 @@
       "goal": "使用 $lvsea-skill-router 只检查有哪些候选，不要加载下游 Skill",
       "expected_action": "respect_explicit_router_scope"
     }
+  ],
+  "routing_mode_cases": [
+    {
+      "id": "default_route_and_continue",
+      "goal": "$lvsea-skill-router 把季度数据做成可编辑的原生 PowerPoint 汇报，路由后继续执行",
+      "expected_action": "rerank_then_decide_then_continue_only_if_confident"
+    },
+    {
+      "id": "confirm_before_load",
+      "goal": "$lvsea-skill-router 先展示候选、真实概率差值和证据，等我回复继续后再执行",
+      "expected_action": "rerank_report_then_stop_until_explicit_continue"
+    },
+    {
+      "id": "fallback_is_not_probability",
+      "goal": "$lvsea-skill-router Jev 不可用时展示本地候选，不要把本地分数写成概率",
+      "expected_action": "label_fallback_and_do_not_auto_load"
+    },
+    {
+      "id": "confirmation_without_codex_gate",
+      "goal": "$lvsea-skill-router 展示候选后等待我确认；目标 Agent 没有 codex-jev-gate",
+      "expected_action": "use_router_confirmation_mode_without_codex_gate_dependency"
+    }
   ]
 }

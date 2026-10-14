@@ -20,11 +20,18 @@
 
 ## 最短用法
 
-先显式调用本 Skill：
+默认路由并继续执行：
 
 ```text
 $lvsea-skill-router
-请判断当前任务应该调用哪些已安装 Skill，完成后继续执行任务。
+把季度数据做成可编辑的 PowerPoint 汇报并检查文字越界；选择合适的 Skill 后继续完成。
+```
+
+先展示候选、等待确认：
+
+```text
+$lvsea-skill-router
+判断这个任务适合哪些 Skill，展示前两名、真实概率差值、证据和 provider 状态；先不要读取候选 Skill 或执行任务，等我回复“继续”。
 ```
 
 在本包目录运行本地预筛选：
@@ -33,12 +40,15 @@ $lvsea-skill-router
 py -3.12 scripts/route_request.py --cwd C:\path\to\project --json "把季度数据做成可编辑的 PowerPoint 汇报并检查文字越界"
 ```
 
-脚本不会替你调用远程模型，而是输出一个有界的 `jev_rerank` MCP 请求。然后让当前 Agent 调用已配置的 `jev` MCP：
+脚本不会替你调用远程模型，而是输出有界的 `jev_rerank` 请求和 `jev_decide` 决策契约。只有用户明确触发路由时，当前 Agent 才调用已配置的 `jev` MCP：
 
 1. 调用 `jev_rerank` 对 shortlist 排名；
 2. 取前 2 至 4 个候选调用 `jev_decide`；
 3. 只有概率至少 `0.68` 且与第二名差距至少 `0.12`，并且交付物与边界都匹配时，才加载 Skill；
 4. 低于阈值时只问一个能区分候选的问题，不要硬猜。
+5. 用户要求先确认时，rerank 后先展示结果并停止；收到“继续”后复用本轮候选进入 `jev_decide`，不重复扫描或 rerank。
+
+Jev 不可用时只能展示标注清楚的本地回退；本地分数不是概率，也不能单独授权自动加载。为跨智能体稳定触发，请统一使用 `$lvsea-skill-router`，并在任务中写明是否等待确认；不要依赖旧名 `$lvsea-jev-gate` 被平台自动映射。`$codex-jev-gate` 是可选的独立 Codex Skill，不是路由器依赖；本路由器的确认流程可独立使用。其他智能体需另行配置兼容的 Jev MCP 才能获得真实 JEV 概率。
 
 ## 常用命令
 
